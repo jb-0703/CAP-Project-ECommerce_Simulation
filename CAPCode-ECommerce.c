@@ -20,39 +20,40 @@ typedef struct{
 } StorePlatform;
 
 bool place_order(StorePlatform *store, StoreServer *server, const char *customer){
-    printf("\n[%s] %s attempts to place order (1 unit)...\n>>", server->region, customer);
+    printf("\n>> [%s] %s attempts to place order (1 unit)...\n", server->region, customer);
 
     if(store->is_network_partitioned){
         if(store->system_type == STORE_CP){
-            printf(">> ERROR-Service Unavailable: Checkout paused. Cannot verify warehouse stock.\n"
-                "We apologize for the inconvenience.");
+            printf("\n>> ERROR-Service Unavailable: Checkout paused. Cannot verify warehouse stock.\n"
+                "We apologize for the inconvenience.\n");
             return false;
     }
         else{
             if(server->local_stock > 0){
                 server->local_stock--;
                 store->true_stock--;
-                printf(">> SUCCESS: Order placed successfully for %s!\n", customer);
+                printf("\n>> SUCCESS: Order placed successfully for %s!\n", customer);
                 if(store->true_stock < 0){
                     printf(">> ALERT: Oversold by %d units! Triggering refund workflow...\n", -store->true_stock);
                 }
                 return true;
             }
             else{
-                printf(">>DECLINED: 0 local stock for %s server.\n", server->region);
+                printf("\n>> DECLINED: 0 local stock for %s server.\n", server->region);
                 return false;
             }
         }
     }
 }
 void simulation(const StorePlatform *store){
+    printf("\n============E-Commerce Inventory Simulation============\n");
     printf("System Type: %s | Warehouse Stock: %d\n",
         store->system_type == STORE_CP ? "CP" : "AP", 
         store->true_stock);
-    printf("US East Stock: %d | US West Stock: %d\n",
+    printf("US East Stock: %d | US West Stock: %d",
         store->us_east.local_stock,
         store->us_west.local_stock);
-    printf("=======================================================\n");
+    printf("\n=======================================================\n");
     printf("1. Order on US-East Server as Alice\n");
     printf("2. Order on US-West Server as Bob\n");
     printf("3. Switch System Type (CP <-> AP)\n");
@@ -63,8 +64,6 @@ void simulation(const StorePlatform *store){
 }
 
 int main(){
-    printf("\n============E-Commerce Inventory Simulation============\n");
-    
     StorePlatform store = {
         {"US East", 1},
         {"US West", 1},
@@ -82,7 +81,7 @@ int main(){
             continue;
         }
         if(choice == 0){
-            printf("Exiting simulation...\n");
+            printf("\n>> Exiting simulation...\n");
             break;
         }
 
@@ -95,7 +94,7 @@ int main(){
                 break;
             case 3:
                 store.system_type = (store.system_type == STORE_CP) ? STORE_AP : STORE_CP;
-                printf("\nSwitched to %s system.\n",
+                printf("\n>> Switched to %s system.\n",
                     store.system_type == STORE_CP ? "CP (Guarantee Consistency)" : "AP (Guarantee Availability)");
                 break;
             case 4:
@@ -106,10 +105,10 @@ int main(){
                     true,
                     store.system_type
                 };
-                printf("Local and true stock reset to 1.\n");
+                printf("\n>> Local and true stock reset to 1.\n");
                 break;
             default:
-                printf("\nInvalid option. Please try again.\n");
+                printf("\n>> Invalid option. Please try again.\n");
         }
     }
     
