@@ -34,7 +34,16 @@ bool place_order(StorePlatform *store, StoreServer *server, const char *customer
                 store->true_stock--;
                 printf("\n>> SUCCESS: Order placed successfully for %s!\n", customer);
                 if(store->true_stock < 0){
+                    printf("\n>> SUCCESS (Oversold): Order accepted locally for %s, but warehouse stock is depleted.\n", customer);
                     printf(">> ALERT: Oversold by %d units! Triggering refund workflow...\n", -store->true_stock);
+                    printf("\n-------------------------------------------------------\n");
+                    printf("[REFUND INITIATED]\n");
+                    printf("Affected customer: %s\n", customer);
+                    printf("Server           : %s\n", server->region);
+                    printf("Warehouse Deficit: %d unit(s) oversold\n", -store->true_stock);
+                    printf("Action           : Refunding %d unit(s)\n", -store->true_stock);
+                    printf("Status           : Order voided\n");
+                    server->local_stock++;
                 }
                 return true;
             }
