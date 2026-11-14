@@ -38,12 +38,12 @@ bool place_order(StorePlatform *store, StoreServer *server, const char *customer
                     printf(">> ALERT: Oversold by %d units! Triggering refund workflow...\n", -store->true_stock);
                     printf("\n-------------------------------------------------------\n");
                     printf("[REFUND INITIATED]\n");
-                    printf("Affected customer: %s\n", customer);
-                    printf("Server           : %s\n", server->region);
-                    printf("Warehouse Deficit: %d unit(s) oversold\n", -store->true_stock);
-                    printf("Action           : Refunding %d unit(s)\n", -store->true_stock);
-                    printf("Status           : Order voided\n");
-                    server->local_stock++;
+                    printf("Affected customer : %s\n", customer);
+                    printf("Server            : %s\n", server->region);
+                    printf("Warehouse Deficit : %d unit(s) oversold\n", -store->true_stock);
+                    printf("Action            : Refunding %d unit(s)\n", -store->true_stock);
+                    printf("Status            : Order voided");
+                    printf("\n-------------------------------------------------------\n");
                 }
                 return true;
             }

@@ -9,7 +9,7 @@ In this simulation, a warehouse holds 1 unit of an item in true stock, which is 
 ## Prerequisites
 To compile this simulation, you will need:
 * A C compiler
-* A terminal or command-line evironment
+* A terminal or command-line environment
 
 ## Setup/Compilation
 1. Download the 'CAPCode-ECommerce.c' file
